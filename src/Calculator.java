@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Calculator {
-    public static void main(String arg[]){
+    public static void main(String[] args){
 
 //        String fn=JOptionPane.showInputDialog("First number: ");
 //        String sn=JOptionPane.showInputDialog("Second number: ");

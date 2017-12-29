@@ -13,7 +13,7 @@ public class Layout extends JFrame{
     private JButton addButton;
     private JTextField textField;
     public Layout(){
-        super("The title");
+        super("Calculator");
         currentString="";
         handler=new EventHandler();
         sum=0;
@@ -59,23 +59,32 @@ public class Layout extends JFrame{
     }
 
     private class EventHandler implements ActionListener{
+        @Override
         public void actionPerformed(ActionEvent event){
             //output the result and reset sum and string builder
             if(event.getSource()==equalButton){
-                String[] tokens=output.toString().split(" +");
-                for(int i=0;i<tokens.length;i++){
-                    tokens[i]=tokens[i].trim();
-                    sum=sum+Integer.parseInt(tokens[i]);
+                //To split according to "+" in java, using "\\+" inside the braces
+                String[] tokens=output.toString().split("\\+");
+                if(tokens.length>=1&&!currentString.equals("=")){
+                    for(int i=0;i<tokens.length;i++){
+                        tokens[i]=tokens[i].trim();
+                        sum=sum+Integer.parseInt(tokens[i]);
+                    }
+                    textField.setText(Integer.toString(sum));
                 }
-                textField.setText(Integer.toString(sum));
                 sum=0;
+                currentString="=";
                 output.setLength(0);
             }else if(event.getSource()==addButton){
-                output.append(" +");
-                textField.setText(output.toString());
+                if(!currentString.equals("+")&&!currentString.equals("=")){
+                    output.append("+");
+                    currentString="+";
+                    textField.setText(output.toString());
+                }
             }else{
                 String text=((JButton)(event.getSource())).getText();
                 output.append(text);
+                currentString="text";
                 textField.setText(output.toString());
             }
         }
