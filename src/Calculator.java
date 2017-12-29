@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Calculator {
     public static void main(String arg[]){
@@ -14,7 +15,8 @@ public class Calculator {
 
         Layout calculator=new Layout();
         calculator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        calculator.setSize(270,180);
+        calculator.setSize(270,270);
+        calculator.setMinimumSize(new Dimension(270,270));
         calculator.setVisible(true);
     }
 }
