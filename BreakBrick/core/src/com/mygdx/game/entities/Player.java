@@ -1,34 +1,26 @@
 package com.mygdx.game.entities;
 
+import com.mygdx.game.MyGdxGame;
+
 public class Player {
-    private static final String spriteUrl="brick.jpg";
-    public static final float width=100f;
-    public static final float height=20f;
-    private static float xVel;
-    private static float xPositon;
+    public static final String spriteUrl="brick.jpg";
+    public static final float width=70f;
+    public static final float height=10f;
+    public static float xVel;
+    public static float xPosition;
     public static final float yPosition=20f;
 
     private static final Player INSTANCE=new Player();
 
-    private static void Player(){
+    private Player(){
        xVel=1f;
-       xPositon=400f;
+       xPosition= MyGdxGame.width/2;
+       System.out.println(xPosition);
     }
 
     public static Player getInstance(){
         return INSTANCE;
     }
-
-    public String getSpriteUrl(){
-        return spriteUrl;
-    }
-
-    public void move(){
-
-    }
-
-
-
 
 
 }
