@@ -1,6 +1,7 @@
 package com.mygdx.game.entities;
 
 import com.mygdx.game.MyGdxGame;
+import java.awt.event.KeyEvent;
 
 public class Player {
     public static final String spriteUrl="brick.jpg";
@@ -13,13 +14,21 @@ public class Player {
     private static final Player INSTANCE=new Player();
 
     private Player(){
-       xVel=1f;
+       xVel=0f;
        xPosition= MyGdxGame.width/2;
        System.out.println(xPosition);
     }
 
     public static Player getInstance(){
         return INSTANCE;
+    }
+
+    public void setxVel(float xVel){
+        this.xVel=xVel;
+    }
+
+    public void move(){
+        this.xPosition+=xVel;
     }
 
 

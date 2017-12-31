@@ -1,8 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,10 +18,14 @@ public class MyGdxGame extends ApplicationAdapter{
 	public static final int height=320;
 	private Sprite ballSprite;
 	private Sprite brickSprite;
-	private Player player=Player.getInstance();
+	private Player player;
+	private Ball ball;
 	
 	@Override
 	public void create () {
+		player=Player.getInstance();
+		ball=Ball.getInstance();
+
 		batch = new SpriteBatch();
 		brickTexture=new Texture(Player.spriteUrl);
 		ballTexture=new Texture(Ball.spriteUrl);
@@ -31,8 +33,9 @@ public class MyGdxGame extends ApplicationAdapter{
 
 		brickSprite=new Sprite(brickTexture);
 		brickSprite.setSize(Player.width,Player.height);
-		ballSprite.setSize(20,20);
-		ballSprite.setPosition(Player.xPosition+10,(Player.yPosition+20/4));
+		ballSprite.setSize(Ball.getWidth(),Ball.getHeight());
+		ball.setxPosition(Player.xPosition);
+		ball.setyPosition(Player.yPosition+20/4);
 		brickSprite.setPosition(Player.xPosition,Player.yPosition);
 	}
 
@@ -42,12 +45,18 @@ public class MyGdxGame extends ApplicationAdapter{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);//not sure what this do???
 
 		//dealing with the player movement
-		move();
+
+		player.move();
+		ball.move();
+		movement();
+		//dealing with the fireball input
+		fireBall();
 		//Starting to draw the images
 		batch.begin();
+		brickSprite.setPosition(Player.xPosition,Player.yPosition);
+		ballSprite.setPosition(ball.getxPosition(),ball.getyPosition());
 		brickSprite.draw(batch);
 		ballSprite.draw(batch);
-
 		batch.end();
 	}
 	
@@ -58,13 +67,23 @@ public class MyGdxGame extends ApplicationAdapter{
 		ballTexture.dispose();
 	}
 
-	public void move(){
+
+
+	public void movement(){
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			Player.xPosition-=4f;
-			brickSprite.setPosition(Player.xPosition,Player.yPosition);
+			//player.setxVel(-4f);
+			player.xPosition-=4f;
+			if(ball.getOnPaddle()){
+				ball.setxPosition(Player.xPosition);
+			}
+			//ballSprite.setPosition(ball.getxPosition()-4f,ball.getyPosition());
 		}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			Player.xPosition+=4f;
-			brickSprite.setPosition(Player.xPosition,Player.yPosition);
+			//player.setxVel(4f);
+			player.xPosition+=4f;
+			if(ball.getOnPaddle()){
+				ball.setxPosition(Player.xPosition);
+			}
+			//ballSprite.setPosition(ball.getxPosition()+4f,ball.getyPosition());
 		}
 
 		if(Player.xPosition<=0f){
@@ -74,5 +93,35 @@ public class MyGdxGame extends ApplicationAdapter{
 			Player.xPosition=(480-Player.width);
 			brickSprite.setPosition((480-Player.width),Player.yPosition);
 		}
+
+		if(ball.getxPosition()<=0f){
+			ball.setxPosition(0f);
+			brickSprite.setPosition(0,Player.yPosition);
+		}else if(ball.getxPosition()>=(480-Player.width)){
+			ball.setxPosition(480-Ball.getWidth());
+			Player.xPosition=(480-Player.width);
+			brickSprite.setPosition((480-Player.width),Player.yPosition);
+		}
+
+		//handling the movement of the ball
+		//ballSprite.setPosition(ball.getxPosition(),ball.getyPosition());
+
 	}
+
+
+	public void fireBall(){
+		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			if(ball.getOnPaddle()){
+				ball.setOnPaddle(false);
+				//get xVel as random number from -1 to 1;
+				//get yVel as random number from 0 to 1;
+				float xVel=(float)(Math.random()*10)-5f;
+				float yVel=(float)Math.random()*10;
+				//give the ball the initial movement direction and speed
+				ball.setVelocity(xVel,yVel);
+			}
+		}
+	}
+
+
 }
