@@ -11,18 +11,13 @@ import com.mygdx.game.entities.Ball;
 import com.mygdx.game.entities.Brick;
 import com.mygdx.game.entities.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class BreakBrick extends ApplicationAdapter{
 	SpriteBatch batch;
 	Texture ballTexture;
 	Texture playerTexture;
 	Texture brickTexture;
-
-	//Texture test;
-	Sprite testSprite;
 	public static final int width=480;
 	public static final int height=320;
 	private Sprite ballSprite;
@@ -38,15 +33,9 @@ public class BreakBrick extends ApplicationAdapter{
 		ball=Ball.getInstance();
 
 		levelManager=new LevelManager();
-		levelManager.setupLevel1();
+		levelManager.setupLevel(levelManager.getCurrentLevel());
 		bricks=levelManager.getBricks();
 		brickTexture=new Texture(Brick.textureURL);
-
-//		test=new Texture(Brick.textureURL);
-//		testSprite=new Sprite(test);
-//		testSprite.setSize(200,50);
-//		testSprite.setPosition(0,0);
-//		testSprite=new Sprite(test,0,0,80,50);
 
 		batch = new SpriteBatch();
 		playerTexture=new Texture(Player.spriteUrl);
@@ -83,8 +72,6 @@ public class BreakBrick extends ApplicationAdapter{
 			brickSprite.setPosition(brick.getxPosition(),brick.getyPosition());
 			brickSprite.draw(batch);
 		}
-
-		//testSprite.draw(batch);
 
 		paddleSprite.setPosition(Player.xPosition,Player.yPosition);
 		ballSprite.setPosition(Ball.xPosition,Ball.yPosition);

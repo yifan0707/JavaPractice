@@ -10,34 +10,42 @@ public class LevelManager {
     private List<Brick> bricks;
 
     public LevelManager(){
+        currentLevel=1;
         bricks=new ArrayList<Brick>();
     }
 
-    public void setupLevel1(){
-        float xPosition=Brick.width;
-        float yPosition=BreakBrick.height*(3f/4f);
+    public void setupLevel(int level){
+        switch(level){
+            case(1):
+                float xPosition=Brick.width;
+                float yPosition=BreakBrick.height*(3f/4f);
 
+                for(int i=0;i<16;i++){
+                    Brick brick=new Brick(xPosition,yPosition);
+                    if(xPosition<=BreakBrick.width-Brick.width){
+                        System.out.println(brick.getxPosition()+" "+brick.getyPosition());
+                        bricks.add(brick);
+                        xPosition+=Brick.width;
+                    }else{
+                        yPosition+=Brick.height+1f;
+                        xPosition=Brick.width;
+                        brick.setxPosition(xPosition);
+                        brick.setyPosition(yPosition);
 
-        for(int i=0;i<16;i++){
-            Brick brick=new Brick(xPosition,yPosition);
-            if(xPosition<=BreakBrick.width-Brick.width){
-                System.out.println(brick.getxPosition()+" "+brick.getyPosition());
-                bricks.add(brick);
-                xPosition+=Brick.width;
-            }else{
-                yPosition+=Brick.height+1f;
-                xPosition=Brick.width;
-                brick.setxPosition(xPosition);
-                brick.setyPosition(yPosition);
+                        bricks.add(brick);
 
-                bricks.add(brick);
-
-                xPosition+=Brick.width;
-            }
+                        xPosition+=Brick.width;
+                    }
+                }
+            case(2):break;
         }
     }
 
     public List<Brick> getBricks(){
         return bricks;
+    }
+
+    public int getCurrentLevel(){
+        return currentLevel;
     }
 }
