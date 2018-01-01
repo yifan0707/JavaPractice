@@ -17,7 +17,7 @@ public class MyGdxGame extends ApplicationAdapter{
 	public static final int width=480;
 	public static final int height=320;
 	private Sprite ballSprite;
-	private Sprite brickSprite;
+	private Sprite paddleSprite;
 	private Player player;
 	private Ball ball;
 	
@@ -31,12 +31,11 @@ public class MyGdxGame extends ApplicationAdapter{
 		ballTexture=new Texture(Ball.spriteUrl);
 		ballSprite=new Sprite(ballTexture);
 
-		brickSprite=new Sprite(brickTexture);
-		brickSprite.setSize(Player.width,Player.height);
-		ballSprite.setSize(Ball.getWidth(),Ball.getHeight());
-		ball.setxPosition(Player.xPosition);
-		ball.setyPosition(Player.yPosition+20/4);
-		brickSprite.setPosition(Player.xPosition,Player.yPosition);
+		paddleSprite=new Sprite(brickTexture);
+		paddleSprite.setSize(Player.width,Player.height);
+		ballSprite.setSize(Ball.width,Ball.height);
+		Ball.xPosition=Player.xPosition;
+		Ball.yPosition=Player.yPosition+Ball.height;
 	}
 
 	@Override
@@ -45,21 +44,23 @@ public class MyGdxGame extends ApplicationAdapter{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);//not sure what this do???
 
 		//dealing with the player movement
-
-		player.move();
 		ball.move();
-		movement();
-		//dealing with the fireball input
-		fireBall();
+		//handle the user input
+		gameInput();
+		//handle the collision
+		hitTheEdge();
+		hitTheBall();
+		//dealing with respawn
+		respawn();
 		//Starting to draw the images
 		batch.begin();
-		brickSprite.setPosition(Player.xPosition,Player.yPosition);
-		ballSprite.setPosition(ball.getxPosition(),ball.getyPosition());
-		brickSprite.draw(batch);
+		paddleSprite.setPosition(Player.xPosition,Player.yPosition);
+		ballSprite.setPosition(Ball.xPosition,Ball.yPosition);
+		paddleSprite.draw(batch);
 		ballSprite.draw(batch);
 		batch.end();
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -67,61 +68,93 @@ public class MyGdxGame extends ApplicationAdapter{
 		ballTexture.dispose();
 	}
 
-
-
-	public void movement(){
+	public void gameInput(){
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			//player.setxVel(-4f);
 			player.xPosition-=4f;
-			if(ball.getOnPaddle()){
-				ball.setxPosition(Player.xPosition);
+			if(Ball.onPaddle){
+				Ball.xPosition=Player.xPosition;
 			}
-			//ballSprite.setPosition(ball.getxPosition()-4f,ball.getyPosition());
 		}else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			//player.setxVel(4f);
 			player.xPosition+=4f;
-			if(ball.getOnPaddle()){
-				ball.setxPosition(Player.xPosition);
+			if(Ball.onPaddle){
+				Ball.xPosition=Player.xPosition;
 			}
-			//ballSprite.setPosition(ball.getxPosition()+4f,ball.getyPosition());
+		}else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			if (Ball.onPaddle) {
+				Ball.onPaddle = false;
+				if(Math.random()>=0.5f){
+					ball.setVelocity(3f, 3f);
+				}else{
+					ball.setVelocity(-3f,3f);
+				}
+			}
+		}
+	}
+
+	public void hitTheEdge(){
+		if(Ball.xPosition<=0f){
+			Ball.xPosition=0f;
+			ball.hitTheWall();
+		}else if(Ball.xPosition>=(480-Ball.width)){
+			Ball.xPosition=(480-Ball.width);
+			ball.hitTheWall();
 		}
 
 		if(Player.xPosition<=0f){
 			Player.xPosition=0f;
-			brickSprite.setPosition(0,Player.yPosition);
 		}else if(Player.xPosition>=(480-Player.width)){
 			Player.xPosition=(480-Player.width);
-			brickSprite.setPosition((480-Player.width),Player.yPosition);
 		}
 
-		if(ball.getxPosition()<=0f){
-			ball.setxPosition(0f);
-			brickSprite.setPosition(0,Player.yPosition);
-		}else if(ball.getxPosition()>=(480-Player.width)){
-			ball.setxPosition(480-Ball.getWidth());
-			Player.xPosition=(480-Player.width);
-			brickSprite.setPosition((480-Player.width),Player.yPosition);
+		if(Ball.yPosition>=height-Ball.height){
+			ball.hitTheCelling();
 		}
-
-		//handling the movement of the ball
-		//ballSprite.setPosition(ball.getxPosition(),ball.getyPosition());
-
 	}
 
+	public void hitTheBall(){
+		if(!Ball.onPaddle&&Ball.yVel<0){
+			//hit the middle of the paddle
+			if((Ball.xPosition>=Player.xPosition&&Ball.xPosition<=Player.xPosition+Player.width)
+				&&(Ball.yPosition>Player.yPosition&&Ball.yPosition<(Player.yPosition+Ball.height))){
+				ball.hitThePlayer();
+			}
 
-	public void fireBall(){
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			if(ball.getOnPaddle()){
-				ball.setOnPaddle(false);
-				//get xVel as random number from -1 to 1;
-				//get yVel as random number from 0 to 1;
-				float xVel=(float)(Math.random()*10)-5f;
-				float yVel=(float)Math.random()*10;
-				//give the ball the initial movement direction and speed
-				ball.setVelocity(xVel,yVel);
+			//hit the left top corner of the paddle
+			if(Ball.xPosition<Player.xPosition&&Ball.xPosition>Player.xPosition-Ball.width){
+				if(Ball.yPosition>Player.yPosition&&Ball.yPosition<Player.yPosition+Player.height){
+					if(Ball.xVel>=0){
+						Ball.yVel=-Ball.yVel;
+						Ball.xVel=-Ball.xVel;
+					}
+				}
+			}
+
+			//hit the right top corner of the paddle
+			if(Ball.xPosition<Player.xPosition+Player.width&&Ball.xPosition>Player.xPosition+Player.width-Ball.width){
+				if(Ball.yPosition>Player.yPosition&&Ball.yPosition<Player.yPosition+Player.height){
+					if(Ball.xVel<=0){
+						Ball.yVel=(-1)*Ball.yVel;
+						Ball.xVel=(-1)*Ball.xVel;
+					}
+				}
 			}
 		}
 	}
+
+	public void respawn(){
+		if(Ball.yPosition<=0f){
+			Player.xPosition=width/2;
+			Ball.xPosition=Player.xPosition;
+			Ball.yPosition=Player.yPosition+Ball.height;
+			Ball.xVel=0f;
+			Ball.yVel=0f;
+			Ball.onPaddle=true;
+		}
+	}
+
+
+
+
 
 
 }
