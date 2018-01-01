@@ -1,10 +1,9 @@
 package com.mygdx.game.entities;
 
-import com.mygdx.game.MyGdxGame;
-import java.awt.event.KeyEvent;
+import com.mygdx.game.BreakBrick;
 
 public class Player {
-    public static final String spriteUrl="brick.jpg";
+    public static final String spriteUrl="paddle.jpg";
     public static final float width=70f;
     public static final float height=10f;
     public static float xVel;
@@ -15,7 +14,7 @@ public class Player {
 
     private Player(){
        xVel=0f;
-       xPosition= MyGdxGame.width/2;
+       xPosition= BreakBrick.width/2;
        System.out.println(xPosition);
     }
 

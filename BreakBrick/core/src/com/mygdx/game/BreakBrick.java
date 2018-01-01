@@ -8,30 +8,52 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.entities.Ball;
+import com.mygdx.game.entities.Brick;
 import com.mygdx.game.entities.Player;
 
-public class MyGdxGame extends ApplicationAdapter{
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
+public class BreakBrick extends ApplicationAdapter{
 	SpriteBatch batch;
 	Texture ballTexture;
+	Texture playerTexture;
 	Texture brickTexture;
+
+	//Texture test;
+	Sprite testSprite;
 	public static final int width=480;
 	public static final int height=320;
 	private Sprite ballSprite;
 	private Sprite paddleSprite;
 	private Player player;
 	private Ball ball;
+	private LevelManager levelManager;
+	private List<Brick> bricks;
 	
 	@Override
 	public void create () {
 		player=Player.getInstance();
 		ball=Ball.getInstance();
 
+		levelManager=new LevelManager();
+		levelManager.setupLevel1();
+		bricks=levelManager.getBricks();
+		brickTexture=new Texture(Brick.textureURL);
+
+//		test=new Texture(Brick.textureURL);
+//		testSprite=new Sprite(test);
+//		testSprite.setSize(200,50);
+//		testSprite.setPosition(0,0);
+//		testSprite=new Sprite(test,0,0,80,50);
+
 		batch = new SpriteBatch();
-		brickTexture=new Texture(Player.spriteUrl);
+		playerTexture=new Texture(Player.spriteUrl);
 		ballTexture=new Texture(Ball.spriteUrl);
 		ballSprite=new Sprite(ballTexture);
 
-		paddleSprite=new Sprite(brickTexture);
+		paddleSprite=new Sprite(playerTexture);
 		paddleSprite.setSize(Player.width,Player.height);
 		ballSprite.setSize(Ball.width,Ball.height);
 		Ball.xPosition=Player.xPosition;
@@ -52,8 +74,18 @@ public class MyGdxGame extends ApplicationAdapter{
 		hitTheBall();
 		//dealing with respawn
 		respawn();
+
 		//Starting to draw the images
 		batch.begin();
+		for(Brick brick:bricks){
+			Sprite brickSprite=new Sprite(brickTexture);
+			brickSprite.setSize(Brick.width,Brick.height);
+			brickSprite.setPosition(brick.getxPosition(),brick.getyPosition());
+			brickSprite.draw(batch);
+		}
+
+		//testSprite.draw(batch);
+
 		paddleSprite.setPosition(Player.xPosition,Player.yPosition);
 		ballSprite.setPosition(Ball.xPosition,Ball.yPosition);
 		paddleSprite.draw(batch);
@@ -64,7 +96,7 @@ public class MyGdxGame extends ApplicationAdapter{
 	@Override
 	public void dispose () {
 		batch.dispose();
-		brickTexture.dispose();
+		playerTexture.dispose();
 		ballTexture.dispose();
 	}
 
@@ -142,7 +174,7 @@ public class MyGdxGame extends ApplicationAdapter{
 	}
 
 	public void respawn(){
-		if(Ball.yPosition<=0f){
+		if(Ball.yPosition<0f){
 			Player.xPosition=width/2;
 			Ball.xPosition=Player.xPosition;
 			Ball.yPosition=Player.yPosition+Ball.height;
