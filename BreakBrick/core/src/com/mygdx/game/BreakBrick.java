@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.entities.Ball;
@@ -20,6 +21,7 @@ public class BreakBrick extends ApplicationAdapter{
 	Texture brickTexture;
 	public static final int width=480;
 	public static final int height=320;
+	private BitmapFont font;
 	private Sprite ballSprite;
 	private Sprite paddleSprite;
 	private Player player;
@@ -31,20 +33,17 @@ public class BreakBrick extends ApplicationAdapter{
 	public void create () {
 		player=Player.getInstance();
 		ball=Ball.getInstance();
+		font=new BitmapFont(Gdx.files.internal("gamefont.fnt"));
 
 		levelManager=new LevelManager();
 		levelManager.setupLevel(levelManager.getCurrentLevel());
 		bricks=levelManager.getBricks();
 		brickTexture=new Texture(Brick.textureURL);
-
-		batch = new SpriteBatch();
 		playerTexture=new Texture(Player.spriteUrl);
 		ballTexture=new Texture(Ball.spriteUrl);
 		ballSprite=new Sprite(ballTexture);
-
 		paddleSprite=new Sprite(playerTexture);
-		paddleSprite.setSize(Player.width,Player.height);
-		ballSprite.setSize(Ball.width,Ball.height);
+		batch = new SpriteBatch();
 		Ball.xPosition=Player.xPosition;
 		Ball.yPosition=Player.yPosition+Ball.height;
 	}
@@ -59,24 +58,32 @@ public class BreakBrick extends ApplicationAdapter{
 		//handle the user input
 		gameInput();
 		//handle the collision
-		hitTheEdge();
-		hitTheBall();
+		ball.hitTheEdge();
+		ball.hitThePlayer();
+		player.hitTheEdge();
 		//dealing with respawn
 		respawn();
+
+		for(Brick brick:bricks){
+			if(ball.getBox().collided(brick.getBox())){
+				if(!ball.hitTBSide(brick)&&!ball.hitLRSide(brick)){
+					ball.hitCorner(brick);
+				}
+				brick.setExisted(false);
+			}
+		}
 
 		//Starting to draw the images
 		batch.begin();
 		for(Brick brick:bricks){
-			Sprite brickSprite=new Sprite(brickTexture);
-			brickSprite.setSize(Brick.width,Brick.height);
-			brickSprite.setPosition(brick.getxPosition(),brick.getyPosition());
-			brickSprite.draw(batch);
+			if(brick.getExisted()){
+				Sprite brickSprite=new Sprite(brickTexture);
+				batch.draw(brickSprite,brick.getxPosition(),brick.getyPosition(),Brick.width,Brick.height);
+			}
 		}
+		batch.draw(paddleSprite,Player.xPosition,Player.yPosition,Player.width,Player.height);
+		batch.draw(ballSprite,Ball.xPosition,Ball.yPosition,Ball.width,Ball.height);
 
-		paddleSprite.setPosition(Player.xPosition,Player.yPosition);
-		ballSprite.setPosition(Ball.xPosition,Ball.yPosition);
-		paddleSprite.draw(batch);
-		ballSprite.draw(batch);
 		batch.end();
 	}
 
@@ -105,56 +112,6 @@ public class BreakBrick extends ApplicationAdapter{
 					ball.setVelocity(3f, 3f);
 				}else{
 					ball.setVelocity(-3f,3f);
-				}
-			}
-		}
-	}
-
-	public void hitTheEdge(){
-		if(Ball.xPosition<=0f){
-			Ball.xPosition=0f;
-			ball.hitTheWall();
-		}else if(Ball.xPosition>=(480-Ball.width)){
-			Ball.xPosition=(480-Ball.width);
-			ball.hitTheWall();
-		}
-
-		if(Player.xPosition<=0f){
-			Player.xPosition=0f;
-		}else if(Player.xPosition>=(480-Player.width)){
-			Player.xPosition=(480-Player.width);
-		}
-
-		if(Ball.yPosition>=height-Ball.height){
-			ball.hitTheCelling();
-		}
-	}
-
-	public void hitTheBall(){
-		if(!Ball.onPaddle&&Ball.yVel<0){
-			//hit the middle of the paddle
-			if((Ball.xPosition>=Player.xPosition&&Ball.xPosition<=Player.xPosition+Player.width)
-				&&(Ball.yPosition>Player.yPosition&&Ball.yPosition<(Player.yPosition+Ball.height))){
-				ball.hitThePlayer();
-			}
-
-			//hit the left top corner of the paddle
-			if(Ball.xPosition<Player.xPosition&&Ball.xPosition>Player.xPosition-Ball.width){
-				if(Ball.yPosition>Player.yPosition&&Ball.yPosition<Player.yPosition+Player.height){
-					if(Ball.xVel>=0){
-						Ball.yVel=-Ball.yVel;
-						Ball.xVel=-Ball.xVel;
-					}
-				}
-			}
-
-			//hit the right top corner of the paddle
-			if(Ball.xPosition<Player.xPosition+Player.width&&Ball.xPosition>Player.xPosition+Player.width-Ball.width){
-				if(Ball.yPosition>Player.yPosition&&Ball.yPosition<Player.yPosition+Player.height){
-					if(Ball.xVel<=0){
-						Ball.yVel=(-1)*Ball.yVel;
-						Ball.xVel=(-1)*Ball.xVel;
-					}
 				}
 			}
 		}

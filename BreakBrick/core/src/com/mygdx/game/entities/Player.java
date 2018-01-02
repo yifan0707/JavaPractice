@@ -1,34 +1,37 @@
 package com.mygdx.game.entities;
 
 import com.mygdx.game.BreakBrick;
+import com.mygdx.game.CollisionBox;
 
 public class Player {
     public static final String spriteUrl="paddle.jpg";
-    public static final float width=70f;
-    public static final float height=10f;
-    public static float xVel;
+    public static final int width=70;
+    public static final int height=10;
     public static float xPosition;
     public static final float yPosition=20f;
 
     private static final Player INSTANCE=new Player();
+    private CollisionBox box;
 
     private Player(){
-       xVel=0f;
        xPosition= BreakBrick.width/2;
        System.out.println(xPosition);
+       box=new CollisionBox(xPosition,yPosition,width,height);
     }
 
     public static Player getInstance(){
         return INSTANCE;
     }
 
-    public void setxVel(float xVel){
-        this.xVel=xVel;
+    public void hitTheEdge(){
+        if(Player.xPosition<=0f){
+            Player.xPosition=0f;
+        }else if(Player.xPosition>=(480-Player.width)){
+            Player.xPosition=(480-Player.width);
+        }
     }
 
-    public void move(){
-        this.xPosition+=xVel;
+    public CollisionBox getBox() {
+        return box;
     }
-
-
 }

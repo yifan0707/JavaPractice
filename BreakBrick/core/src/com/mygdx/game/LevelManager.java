@@ -31,9 +31,8 @@ public class LevelManager {
                         xPosition=Brick.width;
                         brick.setxPosition(xPosition);
                         brick.setyPosition(yPosition);
-
+                        brick.getBox().move(xPosition,yPosition);
                         bricks.add(brick);
-
                         xPosition+=Brick.width;
                     }
                 }
