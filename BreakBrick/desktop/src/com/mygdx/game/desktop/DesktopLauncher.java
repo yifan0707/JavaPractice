@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		//configuration
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title="BreakBrick";
-		config.width= BreakBrick.width;
-		config.height= BreakBrick.height;
+		config.width= BreakBrick.WIDTH;
+		config.height= BreakBrick.HEIGHT;
 		config.resizable=false;
 		new LwjglApplication(new BreakBrick(), config);
 	}

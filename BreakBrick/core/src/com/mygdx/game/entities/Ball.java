@@ -45,21 +45,17 @@ public class Ball {
     }
 
     public Boolean hitLRSide(Brick brick){
-        if(brick.getExisted()){
-            if(yPosition>=brick.getyPosition()-height/2&&yPosition<=brick.getyPosition()+Brick.height-height/2){
-                xVel=-xVel;
-                return true;
-            }
+        if(yPosition>=brick.getyPosition()-height/2&&yPosition<=brick.getyPosition()+Brick.height-height/2){
+            xVel=-xVel;
+            return true;
         }
         return false;
     }
 
     public Boolean hitTBSide(Brick brick){
-        if(brick.getExisted()){
-            if(xPosition>=brick.getxPosition()-width/2&&xPosition<=brick.getxPosition()+Brick.width-width/2){
-                yVel=-yVel;
-                return true;
-            }
+        if(xPosition>=brick.getxPosition()-width/2&&xPosition<=brick.getxPosition()+Brick.width-width/2){
+            yVel=-yVel;
+            return true;
         }
         return false;
     }
@@ -94,11 +90,9 @@ public class Ball {
         }
     }
 
-    public void hitCorner(Brick brick){
-        if(brick.getExisted()){
-            xVel=-xVel;
-            yVel=-yVel;
-        }
+    public void hitCorner(){
+        xVel=-xVel;
+        yVel=-yVel;
     }
 
     public void hitTheEdge(){

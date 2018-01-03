@@ -14,7 +14,7 @@ public class Player {
     private CollisionBox box;
 
     private Player(){
-       xPosition= BreakBrick.width/2;
+       xPosition= BreakBrick.WIDTH/2;
        System.out.println(xPosition);
        box=new CollisionBox(xPosition,yPosition,width,height);
     }

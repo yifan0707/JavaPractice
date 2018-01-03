@@ -18,11 +18,11 @@ public class LevelManager {
         switch(level){
             case(1):
                 float xPosition=Brick.width;
-                float yPosition=BreakBrick.height*(3f/4f);
+                float yPosition=BreakBrick.HEIGHT*(3f/4f);
 
                 for(int i=0;i<16;i++){
                     Brick brick=new Brick(xPosition,yPosition);
-                    if(xPosition<=BreakBrick.width-Brick.width){
+                    if(xPosition<=BreakBrick.WIDTH-Brick.width){
                         System.out.println(brick.getxPosition()+" "+brick.getyPosition());
                         bricks.add(brick);
                         xPosition+=Brick.width;
