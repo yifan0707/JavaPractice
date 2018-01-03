@@ -3,6 +3,9 @@ package com.mygdx.game.entities;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.CollisionBox;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class Ball {
     private static Ball INSTANCE=new Ball();
     public static final String spriteUrl="ball.png";
@@ -36,7 +39,6 @@ public class Ball {
             xPosition+=xVel;
             yPosition+=yVel;
         }
-
         box.move(xPosition,yPosition);
     }
 
@@ -44,20 +46,22 @@ public class Ball {
         return box;
     }
 
-    public Boolean hitLRSide(Brick brick){
-        if(yPosition>=brick.getyPosition()-height/2&&yPosition<=brick.getyPosition()+Brick.height-height/2){
-            xVel=-xVel;
-            return true;
+    public void hitTheBrick(List<Brick> bricks){
+        Iterator it=bricks.iterator();
+        while(it.hasNext()){
+            Brick temp=(Brick)it.next();
+            if(this.getBox().collided(temp.getBox())){
+                if(yPosition>=temp.getyPosition()-height/2&&yPosition<=temp.getyPosition()+Brick.height-height/2){
+                    xVel=-xVel;
+                }else if(xPosition>=temp.getxPosition()-width/2&&xPosition<=temp.getxPosition()+Brick.width-width/2){
+                    yVel=-yVel;
+                }else{
+                    xVel=-xVel;
+                    yVel=-yVel;
+                }
+                it.remove();
+            }
         }
-        return false;
-    }
-
-    public Boolean hitTBSide(Brick brick){
-        if(xPosition>=brick.getxPosition()-width/2&&xPosition<=brick.getxPosition()+Brick.width-width/2){
-            yVel=-yVel;
-            return true;
-        }
-        return false;
     }
 
     public void hitThePlayer(){
@@ -90,11 +94,6 @@ public class Ball {
         }
     }
 
-    public void hitCorner(){
-        xVel=-xVel;
-        yVel=-yVel;
-    }
-
     public void hitTheEdge(){
         if(Ball.xPosition<=0f){
             Ball.xPosition=0f;
@@ -107,4 +106,6 @@ public class Ball {
             Ball.yVel=-Ball.yVel;
         }
     }
+
+
 }

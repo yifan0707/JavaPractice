@@ -35,4 +35,6 @@ public class Brick {
     public CollisionBox getBox() {
         return box;
     }
+
+
 }

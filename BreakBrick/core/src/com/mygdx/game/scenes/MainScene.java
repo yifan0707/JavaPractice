@@ -1,6 +1,5 @@
 package com.mygdx.game.scenes;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,8 +11,6 @@ import com.mygdx.game.LevelManager;
 import com.mygdx.game.entities.Ball;
 import com.mygdx.game.entities.Brick;
 import com.mygdx.game.entities.Player;
-
-import java.util.Iterator;
 import java.util.List;
 
 public class MainScene implements Screen {
@@ -27,7 +24,6 @@ public class MainScene implements Screen {
     Player player;
     Ball ball;
     List<Brick> bricks;
-
     LevelManager levelManager;
 
     public MainScene(BreakBrick game){
@@ -54,37 +50,30 @@ public class MainScene implements Screen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        gameInput();
+
         //dealing with the player movement
         ball.move();
-        //handle the user input
-        gameInput();
         //handle the collision
         ball.hitTheEdge();
         ball.hitThePlayer();
+        ball.hitTheBrick(bricks);
+        //handle the user input
+
         player.hitTheEdge();
         //dealing with respawn
         respawn();
 
-
-        Iterator it=bricks.iterator();
-        while(it.hasNext()){
-            Brick temp=(Brick)it.next();
-            if(ball.getBox().collided(temp.getBox())){
-                if(!ball.hitTBSide(temp)&&!ball.hitLRSide(temp)){
-                    ball.hitCorner();
-                }
-                it.remove();
-            }
-        }
-
         //Starting to draw the images
         game.getBatch().begin();
+
         for(Brick brick:bricks){
             Sprite brickSprite=new Sprite(brickTexture);
-            game.getBatch().draw(brickSprite,brick.getxPosition(),brick.getyPosition(),Brick.width,Brick.height);
+           game.getBatch().draw(brickSprite,brick.getxPosition(),brick.getyPosition(),Brick.width,Brick.height);
         }
         game.getBatch().draw(paddleSprite,Player.xPosition,Player.yPosition,Player.width,Player.height);
         game.getBatch().draw(ballSprite,Ball.xPosition,Ball.yPosition,Ball.width,Ball.height);
@@ -117,7 +106,7 @@ public class MainScene implements Screen {
     public void dispose() {
         ballTexture.dispose();
         playerTexture.dispose();
-        game.getBatch().dispose();
+        brickTexture.dispose();
     }
 
     public void gameInput(){
@@ -145,7 +134,7 @@ public class MainScene implements Screen {
 
     public void respawn(){
         if(Ball.onPaddle==false){
-            if(Ball.yPosition<0f||bricks.size()==0){
+            if(Ball.yPosition<0f){
                 Player.xPosition=BreakBrick.WIDTH/2;
                 Ball.xPosition=Player.xPosition;
                 Ball.yPosition=Player.yPosition+Ball.height;
@@ -153,8 +142,14 @@ public class MainScene implements Screen {
                 Ball.yVel=0f;
                 Ball.onPaddle=true;
             }
+            if(bricks.size()==0){
+                this.dispose();
+                game.setScreen(new MenuScene(game));
+            }
         }
     }
+
+
 
 
 }

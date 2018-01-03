@@ -4,43 +4,47 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.BreakBrick;
-import sun.applet.Main;
 
 
 public class MenuScene implements Screen {
 
     BreakBrick game;
-    private Texture buttonTexture;
+    private Texture startButtonTexture;
+    private Texture exitButtonTexture;
 
-    private Sprite buttonSprite;
-    private BitmapFont font;
+    private Sprite startButtonSprite;
+    private Sprite exitButtonSprite;
+
     public MenuScene(BreakBrick game){
         this.game=game;
-        font=new BitmapFont(Gdx.files.internal("gamefont.fnt"));
     }
 
     @Override
     public void show() {
-        buttonTexture=new Texture("button.png");
-        buttonSprite=new Sprite(buttonTexture);
-        buttonSprite.setSize(100f,50f);
-        buttonSprite.setPosition(BreakBrick.WIDTH/2-buttonSprite.getWidth()/2,
-                BreakBrick.HEIGHT/2-buttonSprite.getHeight()/2);
+        startButtonTexture=new Texture("start_button.png");
+        exitButtonTexture=new Texture("exit_button.png");
+        exitButtonSprite=new Sprite(exitButtonTexture);
+        startButtonSprite=new Sprite(startButtonTexture);
+        exitButtonSprite.setSize(100f,50f);
+        exitButtonSprite.setPosition(BreakBrick.WIDTH/2-exitButtonSprite.getWidth()/2,
+                BreakBrick.HEIGHT/2-exitButtonSprite.getHeight()/2-80f);
+        startButtonSprite.setSize(100f,50f);
+        startButtonSprite.setPosition(BreakBrick.WIDTH/2-startButtonSprite.getWidth()/2,
+                BreakBrick.HEIGHT/2-startButtonSprite.getHeight()/2);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_STENCIL_BITS);
-
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mouseInput();
 
         game.getBatch().begin();
-        buttonSprite.draw(game.getBatch());
+        startButtonSprite.draw(game.getBatch());
+        exitButtonSprite.draw(game.getBatch());
         game.getBatch().end();
     }
 
@@ -66,15 +70,27 @@ public class MenuScene implements Screen {
 
     @Override
     public void dispose() {
-
+        startButtonTexture.dispose();
+        exitButtonTexture.dispose();
     }
 
     public void mouseInput(){
-        if(Gdx.input.getX()<buttonSprite.getX()+buttonSprite.getWidth()&&Gdx.input.getX()>buttonSprite.getX()
-                &&Gdx.input.getY()<buttonSprite.getY()+buttonSprite.getHeight()&&Gdx.input.getY()>buttonSprite.getY()){
+        if(Gdx.input.getX()<startButtonSprite.getX()+startButtonSprite.getWidth()&&Gdx.input.getX()>startButtonSprite.getX()
+                &&BreakBrick.HEIGHT-Gdx.input.getY()<startButtonSprite.getY()+startButtonSprite.getHeight()
+                &&BreakBrick.HEIGHT-Gdx.input.getY()>startButtonSprite.getY()){
             if(Gdx.input.isTouched()){
                 dispose();
                 game.setScreen(new MainScene(game));
+            }
+        }
+
+        if(Gdx.input.getX()<exitButtonSprite.getX()+exitButtonSprite.getWidth()&&Gdx.input.getX()>exitButtonSprite.getX()
+                &&BreakBrick.HEIGHT-Gdx.input.getY()<exitButtonSprite.getY()+exitButtonSprite.getHeight()
+                &&BreakBrick.HEIGHT-Gdx.input.getY()>exitButtonSprite.getY()
+                ){
+            if(Gdx.input.isTouched()){
+                dispose();
+                Gdx.app.exit();
             }
         }
     }
