@@ -27,8 +27,6 @@ public class BreakBrick extends Game {
         super.render();
 	}
 
-
-
 	public SpriteBatch getBatch(){
 	    return batch;
     }

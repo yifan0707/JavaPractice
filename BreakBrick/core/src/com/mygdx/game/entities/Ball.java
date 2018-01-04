@@ -20,8 +20,8 @@ public class Ball {
 
     private Ball(){
         onPaddle=true;
-        this.xVel=0f;
-        this.yVel=0f;
+        Ball.xVel=0f;
+        Ball.yVel=0f;
         box=new CollisionBox(xPosition,yPosition,width,height);
     }
 
@@ -29,9 +29,9 @@ public class Ball {
         return INSTANCE;
     }
 
-    public void setVelocity(float xVel,float yVel){
-        this.xVel=xVel;
-        this.yVel=yVel;
+    public static void setVelocity(float xVel,float yVel){
+        Ball.xVel=xVel;
+        Ball.yVel=yVel;
     }
 
     public void move(){
@@ -42,11 +42,11 @@ public class Ball {
         box.move(xPosition,yPosition);
     }
 
-    public CollisionBox getBox() {
+    private CollisionBox getBox() {
         return box;
     }
 
-    public void hitTheBrick(List<Brick> bricks){
+    public Boolean hitTheBrick(List<Brick> bricks){
         Iterator it=bricks.iterator();
         while(it.hasNext()){
             Brick temp=(Brick)it.next();
@@ -60,8 +60,10 @@ public class Ball {
                     yVel=-yVel;
                 }
                 it.remove();
+                return true;
             }
         }
+        return false;
     }
 
     public void hitThePlayer(){
@@ -106,6 +108,5 @@ public class Ball {
             Ball.yVel=-Ball.yVel;
         }
     }
-
 
 }

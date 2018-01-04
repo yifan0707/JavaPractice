@@ -31,7 +31,7 @@ public class Player {
         }
     }
 
-    public CollisionBox getBox() {
-        return box;
-    }
+//    public CollisionBox getBox() {
+//        return box;
+//    }
 }

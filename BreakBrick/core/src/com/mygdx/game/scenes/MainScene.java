@@ -3,6 +3,7 @@ package com.mygdx.game.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,20 +15,28 @@ import com.mygdx.game.entities.Player;
 import java.util.List;
 
 public class MainScene implements Screen {
-    BreakBrick game;
+    private BreakBrick game;
 
-    Texture brickTexture;
-    Texture playerTexture;
-    Texture ballTexture;
-    Sprite ballSprite;
-    Sprite paddleSprite;
-    Player player;
-    Ball ball;
-    List<Brick> bricks;
-    LevelManager levelManager;
+    private Texture brickTexture;
+    private Texture playerTexture;
+    private Texture ballTexture;
+    private Sprite ballSprite;
+    private Sprite paddleSprite;
+    private Player player;
+    private Ball ball;
+    private List<Brick> bricks;
+    private LevelManager levelManager;
+    private Boolean isPaused;
+    private Sound hitBrick;
+
+    private float xVel;
+    private float yVel;
 
     public MainScene(BreakBrick game){
         this.game=game;
+        this.isPaused=false;
+        this.hitBrick=Gdx.audio.newSound(Gdx.files.internal("hit_brick.wav"));
+
         levelManager=new LevelManager();
         player=Player.getInstance();
         ball=Ball.getInstance();
@@ -41,7 +50,7 @@ public class MainScene implements Screen {
         ballSprite=new Sprite(ballTexture);
         paddleSprite=new Sprite(playerTexture);
 
-        levelManager.setupLevel(levelManager.getCurrentLevel());
+        levelManager.setupLevel();
         bricks=levelManager.getBricks();
 
         Ball.xPosition=Player.xPosition;
@@ -61,19 +70,23 @@ public class MainScene implements Screen {
         //handle the collision
         ball.hitTheEdge();
         ball.hitThePlayer();
-        ball.hitTheBrick(bricks);
+        if(ball.hitTheBrick(bricks)){
+            hitBrick.play(0.5f,2.0f,0f);
+
+        }
         //handle the user input
 
         player.hitTheEdge();
         //dealing with respawn
         respawn();
+        levelUp();
 
         //Starting to draw the images
         game.getBatch().begin();
 
         for(Brick brick:bricks){
             Sprite brickSprite=new Sprite(brickTexture);
-           game.getBatch().draw(brickSprite,brick.getxPosition(),brick.getyPosition(),Brick.width,Brick.height);
+            game.getBatch().draw(brickSprite,brick.getxPosition(),brick.getyPosition(),Brick.width,Brick.height);
         }
         game.getBatch().draw(paddleSprite,Player.xPosition,Player.yPosition,Player.width,Player.height);
         game.getBatch().draw(ballSprite,Ball.xPosition,Ball.yPosition,Ball.width,Ball.height);
@@ -89,12 +102,16 @@ public class MainScene implements Screen {
 
     @Override
     public void pause() {
-
+        xVel=Ball.xVel;
+        yVel=Ball.yVel;
+        ball.setVelocity(0,0);
+        isPaused=true;
     }
 
     @Override
     public void resume() {
-
+        ball.setVelocity(xVel,yVel);
+        isPaused=false;
     }
 
     @Override
@@ -107,34 +124,44 @@ public class MainScene implements Screen {
         ballTexture.dispose();
         playerTexture.dispose();
         brickTexture.dispose();
+        hitBrick.dispose();
     }
 
     public void gameInput(){
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            player.xPosition-=4f;
-            if(Ball.onPaddle){
-                Ball.xPosition=Player.xPosition;
-            }
-        }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            player.xPosition+=4f;
-            if(Ball.onPaddle){
-                Ball.xPosition=Player.xPosition;
-            }
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (Ball.onPaddle) {
-                Ball.onPaddle = false;
-                if(Math.random()>=0.5f){
-                    ball.setVelocity(3f, 3f);
-                }else{
-                    ball.setVelocity(-3f,3f);
+        if(!isPaused){
+
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                player.xPosition-=4f;
+                if(Ball.onPaddle){
+                    Ball.xPosition=Player.xPosition;
+                }
+            }else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+                player.xPosition+=4f;
+                if(Ball.onPaddle){
+                    Ball.xPosition=Player.xPosition;
+                }
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                if (Ball.onPaddle) {
+                    Ball.onPaddle = false;
+                    if(Math.random()>=0.5f){
+                        ball.setVelocity(3f, 3f);
+                    }else{
+                        ball.setVelocity(-3f,3f);
+                    }
                 }
             }
         }
+        if(!isPaused&&Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            pause();
+        }else if(isPaused&&Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            resume();
+        }
+
     }
 
     public void respawn(){
         if(Ball.onPaddle==false){
-            if(Ball.yPosition<0f){
+            if(Ball.yPosition<0f||bricks.size()==0){
                 Player.xPosition=BreakBrick.WIDTH/2;
                 Ball.xPosition=Player.xPosition;
                 Ball.yPosition=Player.yPosition+Ball.height;
@@ -142,14 +169,14 @@ public class MainScene implements Screen {
                 Ball.yVel=0f;
                 Ball.onPaddle=true;
             }
-            if(bricks.size()==0){
-                this.dispose();
-                game.setScreen(new MenuScene(game));
-            }
         }
     }
 
-
-
-
+    public void levelUp(){
+        if(bricks.size()==0){
+            levelManager.levelUp();
+            levelManager.setupLevel();
+            bricks=levelManager.getBricks();
+        }
+    }
 }
