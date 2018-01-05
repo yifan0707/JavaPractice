@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BreakoutClone.iml" filepath="$PROJECT_DIR$/BreakoutClone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/InheritanceAndPolymorphism.iml" filepath="$PROJECT_DIR$/.idea/InheritanceAndPolymorphism.iml" />
     </modules>
   </component>
 </project>
