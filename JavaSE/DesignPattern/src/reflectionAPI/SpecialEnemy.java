@@ -1,14 +1,16 @@
+package reflectionAPI;
+
 public final class SpecialEnemy extends Enemy {
     private double damage;
 
     public SpecialEnemy(){
         super();
-        System.out.println("This is the DEFAULT constructor of the SpecialEnemy class");
+        System.out.println("This is the DEFAULT constructor of the reflectionAPI.SpecialEnemy class");
     }
 
     public SpecialEnemy(int health,String name,double damage){
         super(health,name);
-        System.out.println("This is the alternative constructor of the SpecialEnemy class");
+        System.out.println("This is the alternative constructor of the reflectionAPI.SpecialEnemy class");
     }
 
     public void setDamage(double damage){

@@ -1,3 +1,5 @@
+package reflectionAPI;
+
 import java.lang.reflect.*;
 
 /**
@@ -119,7 +121,7 @@ public class ReflectionTesting {
 
         try {
             //define a field that you want to access.
-            //In this case, we define a field from the parent class Enemy since there is no NAME field in the child class
+            //In this case, we define a field from the parent class reflectionAPI.Enemy since there is no NAME field in the child class
             stringName= SpecialEnemy.class.getSuperclass().getDeclaredField("name");
 
             //set the accessible of the field to be true to avoid private/protected case
