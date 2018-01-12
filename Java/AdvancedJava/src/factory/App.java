@@ -39,7 +39,7 @@ public class App {
         sprite3.outputDrinkTaste();
 
         System.out.println("\n");
-        
+
         SingletonFactory.getInstance();
 
     }
