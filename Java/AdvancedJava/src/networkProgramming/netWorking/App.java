@@ -2,7 +2,6 @@ package networkProgramming.netWorking;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.applet.AppletContext;
 import java.awt.*;
 import java.net.MalformedURLException;
@@ -56,3 +55,4 @@ public class App extends JApplet{
         }
     }
 }
+
