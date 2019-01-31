@@ -1,0 +1,24 @@
+1. What is Object-oriented language?
+OOP us a programming language model organzied around objects rather than actions and data rather than logic
+
+2. Relation between JDK JRE & JVM
+JDK > JRE > JVM
+
+JDK includes Java source code, JVM, Java API
+JRE incldues JVM & Java SE API
+
+3. Differences between List & Array?
+List is an abstract data type(a type of collection) that implies an ordered sequence of values
+Other collections are things like sets and trees
+
+Array is type of a list. 
+Array is an ordered collection of items, where each item inside the array has an index
+
+4. MVC
+Model - Logic
+View - UI
+Controller -handle user input
+
+Both controller and view depends on Model
+Controller also depends on View
+Implementation sequence - Model -> View -> Controller
