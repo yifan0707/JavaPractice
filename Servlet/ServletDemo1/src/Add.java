@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +23,23 @@ public class Add extends HttpServlet {
 		
 		int result = num1 + num2;
 		
+		/**
 		try {
 			PrintWriter writer = res.getWriter();
 			writer.println(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		**/
+		req.setAttribute("result", result);
+		
+		RequestDispatcher rd = req.getRequestDispatcher("Square");
+		try {
+			rd.forward(req, res);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
