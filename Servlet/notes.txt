@@ -1,0 +1,6 @@
+Notes:
+1. the “action” value should be exactly the same as the servlet name!
+example: 
+index.html - <form action="add" method="get">
+Add.java - @WebServlet("/Add")
+This will cause ERROR!
