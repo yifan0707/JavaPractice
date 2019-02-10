@@ -23,7 +23,7 @@ public class Add extends HttpServlet {
 		
 		int result = num1 + num2;
 		
-		/**
+		/*
 		try {
 			PrintWriter writer = res.getWriter();
 			writer.println(result);
@@ -31,7 +31,10 @@ public class Add extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		**/
+		*/
+		
+		/*
+		RequestDispatcher example
 		req.setAttribute("result", result);
 		
 		RequestDispatcher rd = req.getRequestDispatcher("Square");
@@ -40,6 +43,14 @@ public class Add extends HttpServlet {
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		try {
+			res.sendRedirect("Square?result=" + result); // URL rewriting
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

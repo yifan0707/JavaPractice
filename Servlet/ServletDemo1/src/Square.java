@@ -19,7 +19,8 @@ public class Square extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PrintWriter writer = response.getWriter();
-			writer.write("Result is : " + request.getAttribute("result"));
+			writer.write("Result from requestDispatcher is : " + request.getAttribute("result"));
+			writer.write("Result from Redirect is: " + request.getParameter("result") );
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
