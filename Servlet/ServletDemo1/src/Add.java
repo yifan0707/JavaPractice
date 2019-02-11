@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Add
@@ -49,13 +50,25 @@ public class Add extends HttpServlet {
 		}
 		*/
 		
+		/*
+		example of sendRedirect
 		try {
 			res.sendRedirect("Square?result=" + result); // URL rewriting
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
+		HttpSession session = req.getSession();
+		session.setAttribute("result", result);
+		
+		try {
+			res.sendRedirect("Square");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

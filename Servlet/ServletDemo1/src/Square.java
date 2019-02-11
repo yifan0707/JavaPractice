@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Square
@@ -19,8 +20,12 @@ public class Square extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PrintWriter writer = response.getWriter();
-			writer.write("Result from requestDispatcher is : " + request.getAttribute("result"));
-			writer.write("Result from Redirect is: " + request.getParameter("result") );
+			//writer.write("Result from requestDispatcher is : " + request.getAttribute("result"));
+			//writer.write("Result from Redirect is: " + request.getParameter("result") );
+			
+			HttpSession session = request.getSession();
+			int result = (int) session.getAttribute("result");
+			writer.write("Result from session is: " + result );
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
