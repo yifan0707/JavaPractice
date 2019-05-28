@@ -4,3 +4,6 @@ example:
 index.html - <form action="add" method="get">
 Add.java - @WebServlet("/Add")
 This will cause ERROR!
+
+2.  requestDispatcher is used when one servlet want to pass req and res objects to another servlet within one server.
+	sendRedirect should be used under this senario. Example: third-party payment. it send (req1,res1) to the link u clicked(button). Then it send res1 back to the browser and inform the brower to send (req2, res2) -> paypal. this will using sendRedirect

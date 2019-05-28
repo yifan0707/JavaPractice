@@ -1,0 +1,77 @@
+5/28 Introduction
+5/28 Practice Activities
+
+5/28 Part 1
+Why Spring?
+
+Spring in a Nutshell, Spring is sort of an alternative choice of JavaEE
+
+What should we do?
+JavaEE or Spring ?  -> BOTH!
+
+/* */
+
+5/28 9. Spring Core Framework
+Goal of Spring:
+1. Lightweight development with Java POJOS(Plain old java object)
+
+2. Dependency injection to promote loose coupling
+
+3. Declaretive programming with Aspect-Oriented-Programming(AOP)
+
+4. Minimize boilerplate(样板，引用) Java Code
+
+Spring Core Container
+1. Core Container
+	- Factory for creating beans
+	- Manage bean dependencies
+2. Beans
+3. Core
+4. SpEL(Spring Expression Language)
+5. Context
+
+------
+
+Spring Intrastructure
+1. AOP(Aspect Oriented Programming)
+	- Add functionality to objects declaratively
+		- Logging Security transactions, etc...
+2. Aspects
+3. Instrumentation
+4. Messaging
+
+------
+
+Spring Data Access Layer
+1. JDBC
+	- Collections of helper classes that help programmers accessing databse
+	- Reduce source code by 50%
+
+2. ORM(Object to Relational Mapping)
+	- Integration with Hibernate and JPA
+3. Transactions???
+	- Makes heavy use of AOP behind the scenes
+4. OXM
+5. JMS(Java Message Service)
+	- For sending async messages to a Message Broker
+	- Spring Provides helper classes for JMS
+
+------
+
+Spring Web Layer
+1. Servlet
+2. WebSocket
+3. Web
+4. Portlet
+
+------
+
+Spring Test Layer
+1. unit
+2. Integration
+3. Mock
+	- Mock Objects and out-of-container Testing
+
+/* */
+
+Spring Projects
