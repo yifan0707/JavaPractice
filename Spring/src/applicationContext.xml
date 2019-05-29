@@ -17,6 +17,15 @@
     	<constructor-arg ref="myFortune" />
     </bean>
     
+    <bean id="secCoach"
+    	class="com.springdemo.SwimCoach">
+    	<!-- set up a setter dependency injection -->
+    	<property name="FortuneService" ref="myFortune"></property>
+    	
+    	<property name="email" value="lvan0707@outlook.com" />
+    	<property name="name" value="Yifan Lu" />
+    </bean>
+    
 </beans>
 
 
