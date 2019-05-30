@@ -9,9 +9,9 @@ Spring in a Nutshell, Spring is sort of an alternative choice of JavaEE
 What should we do?
 JavaEE or Spring ?  -> BOTH!
 
-/* */
+/* 5/28 */
 
-5/28 9. Spring Core Framework
+9. Spring Core Framework
 Goal of Spring:
 1. Lightweight development with Java POJOS(Plain old java object)
 
@@ -72,6 +72,48 @@ Spring Test Layer
 3. Mock
 	- Mock Objects and out-of-container Testing
 
-/* */
+/* 5/28 */
 
-Spring Projects
+Spring "Projects"
+What are Spring "Projects"
+Additional Spring Modules built on top of the core Spring Framework 
+
+Only use what you need: 
+	- Spring Cloud, Spring Data
+	- Spring Batch, Spring Security
+	- Spring for Android, Spring Web Flow
+	- Spring Web Services, Spring LDAP
+
+/* 5/28 */
+Spring Development Enviornment
+
+Spring & Hibernate for Beginners
+Inversion of Control(IoC)控制反转
+Outsource to an object factory
+- The approach of outsourceing the construction and management to objects
+
+Primary functions
+	-create and manage objects(inversion of Control)
+	-Inject object's dependencies(Dependency Injection)
+
+Configuring Spring Container
+- XML configuration file(legacy, but most legacy apps still use this)
+- Java Annotations(modern)
+- Java Source Code(modern)
+
+Spring Development Process
+1. Configure your Spring Beans
+2. Create a Spring Container
+3. Retrieve Beans from Spring Container
+
+What is Spring Beans:
+A "Spring Bean" is simply a java object
+
+Inject object's dependencies(Dependenct Injection)
+There are many injection types with spring
+The most common two types are:
+	- Constructor Injection
+	- Setter Injection
+
+Injection values from a property file
+

@@ -8,7 +8,6 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- load the properties file: sport.properties -->
-	<context:property-placeholder location="classpath:sports.properties" />
 
     <!-- Define your beans here -->
     <bean id="myFortune"
@@ -16,29 +15,11 @@
     </bean>
 
     <bean id="myCoach"
-    	class="com.springdemo.SwimCoach">
+    	class="com.springdemo.SwimCoach"
+    	scope="prototype">
     	<!-- set up a constructor injection -->
     	<constructor-arg ref="myFortune" />
     </bean>
-    
-    <bean id="secCoach"
-    	class="com.springdemo.SwimCoach">
-    	<!-- set up a setter dependency injection -->
-    	<property name="fortuneService" ref="myFortune"></property>
-    	
-    	<!-- inject literal values, now its reading values from sports.properties file -->
-    	<property name="email" value="${foo.email}" />
-    	<property name="name" value="${foo.name}" />
-    </bean>
-    
-    <bean id="magicFortune"
-    	class="com.springdemo.MagicFortuneService">
-    </bean>
-    <bean id="gameCoach"
-    	class="com.springdemo.ApexCoach">
-    	<property name="service" ref="magicFortune"></property>
-    </bean>
-    
 </beans>
 
 

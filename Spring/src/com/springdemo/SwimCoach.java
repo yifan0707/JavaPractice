@@ -14,6 +14,15 @@ public class SwimCoach implements Coach{
 		System.out.println("Inside default constructor");
 	}
 	
+	public void startupMethod() {
+		System.out.println("this is startup method for SwimCoach");
+	}
+	
+	public void endupMethod() {
+		System.out.println("This is endup method for SwimCoach!");
+	}
+	
+	
 	public void setFortuneService(FortuneService fortuneService) {
 		this.fortuneService = fortuneService;
 	}
