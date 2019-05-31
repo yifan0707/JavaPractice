@@ -138,3 +138,28 @@ Bean Lifecycle
 Container started -> Bean Instantiated -> Dependencies Injected -> Internal Spring Processing -> Your Custom Ini method -> Bean is ready for use(container is shutdown) ---
 --> custom destroy method -> Stop
 
+
+/* 5/31 */
+What are Java annotations
+- Special labels/markers added to Java classes
+- Provide meta-data about the class
+- Processed at compile time or run-time for special processing
+
+Why Spring configuration with Annotations?
+- XML configuration can be verbose
+- Configure your Spring beans with Annotations
+- Annotations minimized the XML configuration
+
+- Spring will scan your java classes for special annotations
+- Automatically register the beans in the Spring container
+
+What is Spring AutoWiring?
+For dependency injection, Spring can use auto wiring
+Spring will lokk for a class that matches the property
+	- mathces by type: class or interface
+Spring will inject it aotomatically hence it is autowired
+
+Autowiring type
+- Constructor injection
+- setter injection
+- field injection
