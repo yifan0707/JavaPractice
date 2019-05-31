@@ -117,3 +117,24 @@ The most common two types are:
 
 Injection values from a property file
 
+
+
+/* 5/30 */
+Bean Scopes
+-Scope refers to the lifecycle of a bean
+-How long does the bean live?
+-How many instance are created?
+-How is the bean shared?
+
+Defauly bean scope is "Singleton"
+and here are the additional spring scopes:
+Singleton - Create a single shared instance of the bean. Default scope
+prototype - Create a new bean instance for each container request
+request - Scoped to an HTTP web request. Only for web apps
+session - Scoped to an HTTP web session. Only for web apps
+global-session - Scoped to a global http web session. Only used for web apps.
+
+Bean Lifecycle
+Container started -> Bean Instantiated -> Dependencies Injected -> Internal Spring Processing -> Your Custom Ini method -> Bean is ready for use(container is shutdown) ---
+--> custom destroy method -> Stop
+
