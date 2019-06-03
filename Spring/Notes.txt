@@ -162,4 +162,4 @@ Spring will inject it aotomatically hence it is autowired
 Autowiring type
 - Constructor injection
 - setter injection
-- field injection
+- field injection(based on java Reflection, set the field value directly without any extra work like setter or constructor property)
