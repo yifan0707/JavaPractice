@@ -160,6 +160,62 @@ Spring will lokk for a class that matches the property
 Spring will inject it aotomatically hence it is autowired
 
 Autowiring type
+All autowiring types are pretty much the same
 - Constructor injection
 - setter injection
 - field injection(based on java Reflection, set the field value directly without any extra work like setter or constructor property)
+
+@Qualifier to specify the actually implementation of the interface under @Autowire annotation
+Apply @Qualifier annotation to
+- Constructor injection
+- Setter injection methods
+- field Injection
+
+/* 6/May/2019 */
+Bean Scopes
+- Scope refers to the lifecycle of a bean
+- how long does the bean live?
+- how many instances are created 
+- how is the bean shared
+
+Example:
+Make use of @Scope("prototype")
+to change the current bean's scope from singleton(default) to prototype
+
+
+Bean Lifecycle Methods - Annotations
+Bean lifecycle methods / hooks
+- We can add custom code during bean initialization
+	- Calling custom business logic methods
+	- Setting up handles to resources(db, sockets, file etc)
+- You can add custom code during bean destruction
+	- Calling custom business logic method
+	- clean up handles to resources(db, sockets, files etc)
+
+Development Process:
+1. Define your methods for init and destroy
+2. Add annotations: @PostConstruct and @PreDestroy
+
+Notes: 
+! Void returm type is most commonly used since we are not be able to catch the result value.
+
+!! For "Prototype" scoped beans, Spring does not call the @PreDestroy method!
+
+
+
+Use Java Source code to configurate Spring Container
+Notes:3 ways to configuring Spring Contianer
+1. Full XML config
+2. XML Component Scan
+3. Java Configuration Class(no XML required)
+
+*3*Java configuration
+- Create a java class and annotate as @Configuration
+
+- Add Component Scanning support: @ComponentScan(Optional)
+
+- Read Spring Java Configuration class
+
+- Retrieve bean from Spring Container
+
+
