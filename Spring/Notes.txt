@@ -182,7 +182,6 @@ Example:
 Make use of @Scope("prototype")
 to change the current bean's scope from singleton(default) to prototype
 
-
 Bean Lifecycle Methods - Annotations
 Bean lifecycle methods / hooks
 - We can add custom code during bean initialization
