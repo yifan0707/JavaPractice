@@ -218,3 +218,6 @@ Notes:3 ways to configuring Spring Contianer
 - Retrieve bean from Spring Container
 
 
+/* 6/6/2019 */
+Defining bean in java config class
+
